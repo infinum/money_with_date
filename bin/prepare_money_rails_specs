@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "rubygems"
+require "bundler/setup"
+require "open-uri"
+require "zip"
+
+money_rails_version = ENV["MONEY_RAILS_VERSION"]
+
+# Matching money-rails versions to git commits
+version_refs = {
+  "1.15.0" => "4d05fee299765e85ebf31282cbb491c5b2beb609"
+}
+
+archive_folder_path = "#{__dir__}/../tmp"
+archive_file_path = "#{archive_folder_path}/archive.zip"
+destination_folder_path = "#{__dir__}/../spec_money_rails"
+
+FileUtils.mkdir_p archive_folder_path
+FileUtils.rm_rf destination_folder_path
+
+# Fetching money-rails codebase from GH
+money_rails_version_ref = version_refs[money_rails_version]
+money_rails_version_url = "https://github.com/RubyMoney/money-rails/archive/#{money_rails_version_ref}.zip"
+IO.copy_stream(URI.open(money_rails_version_url), archive_file_path) # rubocop:disable Security/Open
+
+# Unzipping the codebase archive
+Zip::File.open(archive_file_path) do |zip_file|
+  zip_file.each do |f|
+    f_path = File.join(archive_folder_path, f.name)
+    FileUtils.mkdir_p(File.dirname(f_path))
+    zip_file.extract(f, f_path) unless File.exist?(f_path)
+  end
+end
+
+# Moving money-rails codebase to spec_money_rails folder
+FileUtils.mv "#{archive_folder_path}/money-rails-#{money_rails_version_ref}", destination_folder_path, force: true
+
+# Requiring money_with_date in money-rails specs
+File.open("#{destination_folder_path}/Gemfile", "a") { |f| f << 'gem "sprockets-rails"' }
+Dir["#{destination_folder_path}/gemfiles/*.gemfile"].each do |gemfile_path|
+  File.open(gemfile_path, "a") { |f| f << 'gem "money_with_date", path: "../../"' }
+end
+
+# Adding a simple spec to verify that money_with_date has been loaded
+File.open("#{destination_folder_path}/spec/money_with_date_spec.rb", "w") do |f|
+  f << <<~RUBY
+    require 'spec_helper'
+
+    RSpec.describe Money do
+      it "has a date" do
+        money = Money.new(100)
+
+        expect(money.date).to be_a(Date)
+      end
+    end
+  RUBY
+end
+
+FileUtils.rm_rf archive_folder_path
