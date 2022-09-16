@@ -16,5 +16,5 @@ require_relative "money_with_date/rates_store/memory"
 ::Money.date_determines_equality = false
 ::Money.default_date = ::Date.respond_to?(:current) ? -> { ::Date.current } : -> { ::Date.today }
 
-require "money_with_date/railtie" if defined?(::Rails::Railtie)
+require "money_with_date/railtie" if defined?(::Rails::Railtie) && defined?(::MoneyRails)
 # :nocov:
