@@ -6,7 +6,7 @@ require "bundler/setup"
 require "open-uri"
 require "zip"
 
-money_rails_version = ENV["MONEY_RAILS_VERSION"]
+money_rails_version = ENV.fetch("MONEY_RAILS_VERSION", nil)
 
 # Matching money-rails versions to git commits
 version_refs = {
