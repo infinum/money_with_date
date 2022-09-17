@@ -5,12 +5,8 @@ module MoneyWithDate
     def self.init
       ::ActiveSupport.on_load(:active_record) do
         require "money_with_date/active_record/monetizable"
-        require "money_with_date/active_record/class_methods"
 
         ::ActiveRecord::Base.prepend(::MoneyWithDate::ActiveRecord::Monetizable)
-        ::Money.singleton_class.prepend(::MoneyWithDate::ActiveRecord::ClassMethods)
-
-        ::Money.default_date_column = :created_at
       end
     end
 
