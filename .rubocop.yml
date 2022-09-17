@@ -6,6 +6,9 @@ AllCops:
     - 'spec_money_rails/**/*'
     - 'vendor/**/*'
 
+Style/AccessorGrouping:
+  Enabled: false
+
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
