@@ -56,7 +56,7 @@ RSpec.describe ".monetize" do
       it "is used to set the date" do
         record = model.new(price_cents: 100, created_at: Date.today - 10)
 
-        expect(record.price).to eq(Money.new(100, :usd, date: Date.today - 10))
+        expect(record.price.date).to eq(Date.today - 10)
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe ".monetize" do
       it "uses the default date" do
         record = model.new(price_cents: 100, created_at: nil)
 
-        expect(record.price).to eq(Money.new(100, :usd, date: Date.today))
+        expect(record.price.date).to eq(Date.today)
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe ".monetize" do
 
         record = model.new(price_cents: 100, created_at: Date.today - 10)
 
-        expect(record.price).to eq(Money.new(100, :usd, date: Date.today))
+        expect(record.price.date).to eq(Date.today)
       end
     end
   end
@@ -102,7 +102,7 @@ RSpec.describe ".monetize" do
       it "uses the default date" do
         record = model.new(price_cents: 100, created_on: nil)
 
-        expect(record.price).to eq(Money.new(100, :usd, date: Date.current))
+        expect(record.price.date).to eq(Date.current)
       end
     end
 
@@ -158,7 +158,7 @@ RSpec.describe ".monetize" do
       it "resolves the callable" do
         record = model.new(price_cents: 100)
 
-        expect(record.price).to eq(Money.new(100, :usd, date: Date.today + 5))
+        expect(record.price.date).to eq(Date.today + 5)
       end
     end
 
@@ -178,7 +178,7 @@ RSpec.describe ".monetize" do
       it "uses that value" do
         record = model.new(price_cents: 100)
 
-        expect(record.price).to eq(Money.new(100, :usd, date: Date.today + 5))
+        expect(record.price.date).to eq(Date.today + 5)
       end
     end
   end
@@ -199,13 +199,13 @@ RSpec.describe ".monetize" do
     it "gives precedence to with_model_date" do
       record = model.new(price_cents: 100, created_on: Date.today - 5)
 
-      expect(record.price).to eq(Money.new(100, :usd, date: Date.today - 5))
+      expect(record.price.date).to eq(Date.today - 5)
     end
 
     it "uses the default date if model date doesn't exist" do
       record = model.new(price_cents: 100, created_on: nil)
 
-      expect(record.price).to eq(Money.new(100, :usd, date: Date.today))
+      expect(record.price.date).to eq(Date.today)
     end
   end
 end
