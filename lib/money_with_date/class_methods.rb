@@ -3,6 +3,7 @@
 module MoneyWithDate
   module ClassMethods
     attr_accessor :date_determines_equality
+    attr_accessor :default_date_column
 
     attr_writer :default_date
 

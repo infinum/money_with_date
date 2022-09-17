@@ -32,6 +32,20 @@ RSpec.describe MoneyWithDate::ClassMethods do
     end
   end
 
+  describe ".default_date_column / .default_date_column=" do
+    around do |example|
+      old_default_date_column = Money.default_date_column
+      example.run
+      Money.default_date_column = old_default_date_column
+    end
+
+    it "sets and retrieves the value" do
+      expect do
+        Money.default_date_column = :created_on
+      end.to change(Money, :default_date_column).from(:created_at).to(:created_on)
+    end
+  end
+
   describe ".add_rate" do
     around(:each) do |example|
       old_default_bank = Money.default_bank
