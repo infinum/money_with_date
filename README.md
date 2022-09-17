@@ -46,10 +46,10 @@ transactions = [
 ]
 
 transactions.map { |money| money.exchange_to(:eur) }.sum
-# => Money.from_amount(4,82, "EUR")
+# => Money.from_amount(4.82, "EUR")
 # 2 CHF == 1,92 EUR on today's date
-# 1 USD = 0,9 EUR on 1/1/2020
-# 1,92 + 0,9 + 2 = 4,82
+# 1 USD == 0,9 EUR on 1/1/2020
+# 1,92 + 0,9 + 2 == 4,82
 
 # In Rails, a date column can be used to control the date of the Money object:
 class Product < ActiveRecord::Base
