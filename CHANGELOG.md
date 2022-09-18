@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.3.0] - 2022-09-18
+
+- Fix monetizable module specs ([#4](https://github.com/infinum/money_with_date/pull/4))
+- Globalize default_date_column configuration option ([#5](https://github.com/infinum/money_with_date/pull/5))
+
 ## [0.2.0] - 2022-09-16
 
 - Make the gem work without money-rails ([#2](https://github.com/infinum/money_with_date/pull/2))
