@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module MoneyWithDate
-  VERSION = "0.2.0"
+  VERSION = "0.3.0"
 
   MINIMUM_MONEY_VERSION = "6.14.0"
   MINIMUM_MONEY_RAILS_VERSION = "1.15.0"
