@@ -2,7 +2,7 @@
 
 A Ruby library which extends the popular [money](https://github.com/RubyMoney/money) and [money-rails](https://github.com/RubyMoney/money-rails) gems with support for dated Money objects.
 
-Dated Money objects are useful in situations where you have to exchange money between currencies based on historical exchange rates, and you'd like to keep date information on the Money object itself. 
+Dated Money objects are useful in situations where you have to exchange money between currencies based on historical exchange rates, and you'd like to keep date information on the Money object itself.
 
 ## Installation
 
@@ -337,12 +337,16 @@ Money.default_date_column = nil
 - money-rails: **1.15.0**
 
 The gem has been tested against all possible combinations of supported Ruby, Rails, money, and money-rails versions:
-- Ruby: `2.6`, `2.7`, `3.0`, and `3.1`
-- Rails: `5.2.8.1`, `6.0.6`, `6.1.7`, `7.0.4`
+- Ruby: `2.6`, `2.7`, `3.0`, `3.1` and `3.2`
+- Rails: `~> 5.2.0`, `~> 6.0.0`, `~> 6.1.0`, `~> 7.0.0` and `~> 7.1.0`
 - money: `6.14.0`, `6.14.1`, and `6.16.0`
 - money-rails: `1.15.0`
 
-Note: the gem hasn't been tested on Rails `5.2.8.1` with Rubies `3.0` and `3.1`, and on Rails `7.0.4` with Ruby `2.6` as those combinations of versions aren't compatible.
+The following combinations have been excluded from the test matrix because of incompatibility:
+- Ruby `2.6` with Rails `~> 7.0.0` and `~> 7.1.0`
+- Ruby `3.0` with Rails `~> 5.2.0`
+- Ruby `3.1` with Rails `~> 5.2.0`
+- Ruby `3.2` with Rails `~> 5.2.0`
 
 In addition to running its own test suite, the CI for this gem also runs [money's](https://github.com/RubyMoney/money/tree/main/spec) and [money-rails's](https://github.com/RubyMoney/money-rails/tree/main/spec) test suites with this gem loaded, to prevent regressions. This has been achieved by cloning their test suites from GitHub and requiring this gem in their spec files. For technical information, check the CI [workflow](.github/workflows/ci.yml).
 

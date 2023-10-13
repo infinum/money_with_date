@@ -35,7 +35,7 @@ RSpec.describe MoneyWithDate::RatesStore::Memory do
 
     it "is an Enumeator" do
       expect(subject.each_rate).to be_kind_of(Enumerator)
-      result = subject.each_rate.each_with_object({}) { |(from, to, rate), m| m[[from, to].join] = rate }
+      result = subject.each_rate.with_object({}) { |(from, to, rate), m| m[[from, to].join] = rate }
       expect(result).to match({ "USDCAD" => 0.9, "CADUSD" => 1.1 })
     end
   end
