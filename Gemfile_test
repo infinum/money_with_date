@@ -4,9 +4,9 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "money", ENV["MONEY_VERSION"]
-gem "money-rails", ENV["MONEY_RAILS_VERSION"]
-gem "activerecord", ENV["RAILS_VERSION"]
+gem "money", ENV["MONEY_VERSION"] if ENV["MONEY_VERSION"]
+gem "money-rails", ENV["MONEY_RAILS_VERSION"] if ENV["MONEY_RAILS_VERSION"]
+gem "activerecord", ENV["RAILS_VERSION"] if ENV["RAILS_VERSION"]
 gem "sqlite3"
 gem "rubyzip"
 gem "simplecov", require: false

@@ -9,6 +9,7 @@
 /spec_money/
 /spec_money_rails/
 /vendor/
+.ruby-version
 
 # rspec failure tracking
 .rspec_status

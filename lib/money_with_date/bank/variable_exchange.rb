@@ -54,7 +54,7 @@ module MoneyWithDate
       def rates
         return super if store.method(:get_rate).parameters.size == 2
 
-        store.each_rate.each_with_object({}) do |(from, to, rate, date), hash|
+        store.each_rate.with_object({}) do |(from, to, rate, date), hash|
           hash[date.to_s] ||= {}
           hash[date.to_s][[from, to].join(SERIALIZER_SEPARATOR)] = rate
         end
