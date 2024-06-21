@@ -49,12 +49,14 @@ spec_helper = spec_helper.gsub("./spec/support/**/*.rb", "./spec_money/support/*
 File.write("#{destination_folder_path}/spec_helper.rb", spec_helper)
 
 # Patching YAML spec failing because of Psych gem update
-patch_url = "https://github.com/RubyMoney/money/commit/9de53057f3089c98e2bf37f8d6b2e924ec7e52de.patch"
-IO.copy_stream(URI.open(patch_url), "#{destination_folder_path}/yaml.patch") # rubocop:disable Security/Open
-yaml_patch = File.read("#{destination_folder_path}/yaml.patch")
-yaml_patch = yaml_patch.gsub("spec/money_spec.rb", "spec_money/money_spec.rb")
-File.write("#{destination_folder_path}/yaml.patch", yaml_patch)
-system("git apply --include=spec_money/money_spec.rb spec_money/yaml.patch") || (raise "YAML spec patch error")
+if Gem::Version.new(money_version) < Gem::Version.new('6.18.0')
+  patch_url = "https://github.com/RubyMoney/money/commit/9de53057f3089c98e2bf37f8d6b2e924ec7e52de.patch"
+  IO.copy_stream(URI.open(patch_url), "#{destination_folder_path}/yaml.patch") # rubocop:disable Security/Open
+  yaml_patch = File.read("#{destination_folder_path}/yaml.patch")
+  yaml_patch = yaml_patch.gsub("spec/money_spec.rb", "spec_money/money_spec.rb")
+  File.write("#{destination_folder_path}/yaml.patch", yaml_patch)
+  system("git apply --include=spec_money/money_spec.rb spec_money/yaml.patch") || (raise "YAML spec patch error")
+end
 
 # Adding a simple spec to verify that money_with_date has been loaded
 File.open("#{destination_folder_path}/money_with_date_spec.rb", "w") do |f|
