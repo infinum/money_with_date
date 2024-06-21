@@ -12,7 +12,10 @@ money_version = ENV.fetch("MONEY_VERSION", nil)
 version_refs = {
   "6.14.0" => "e26e222af68bf9b89ac52e1c6e5b2562a0577a8e",
   "6.14.1" => "9bb10c79e24abb62ed5a0d1f88876cd459b307b7",
-  "6.16.0" => "ca59ced949e4e818262a59ffbcad3ec54affa81f"
+  "6.16.0" => "ca59ced949e4e818262a59ffbcad3ec54affa81f",
+  "6.17.0" => "35ced98c83d562b40623a985861e301a836327b5",
+  "6.18.0" => "f5699476c629d291b943ebbe495561d287599ed4",
+  "6.19.0" => "faec0fbb7cb10646453c5ef6644289d83615b4fe"
 }
 
 archive_folder_path = "#{__dir__}/../tmp"
