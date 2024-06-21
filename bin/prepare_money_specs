@@ -49,7 +49,7 @@ spec_helper = spec_helper.gsub("./spec/support/**/*.rb", "./spec_money/support/*
 File.write("#{destination_folder_path}/spec_helper.rb", spec_helper)
 
 # Patching YAML spec failing because of Psych gem update
-if Gem::Version.new(money_version) < Gem::Version.new('6.18.0')
+if Gem::Version.new(money_version) < Gem::Version.new("6.18.0")
   patch_url = "https://github.com/RubyMoney/money/commit/9de53057f3089c98e2bf37f8d6b2e924ec7e52de.patch"
   IO.copy_stream(URI.open(patch_url), "#{destination_folder_path}/yaml.patch") # rubocop:disable Security/Open
   yaml_patch = File.read("#{destination_folder_path}/yaml.patch")
