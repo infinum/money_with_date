@@ -83,7 +83,7 @@ RSpec.describe MoneyWithDate::ClassMethods do
 
       context "when store object doesn't accept a date param" do
         before do
-          Money.default_bank = MoneyWithDate::Bank::VariableExchange.new(::Money::RatesStore::Memory.new)
+          Money.default_bank = MoneyWithDate::Bank::VariableExchange.new(Money::RatesStore::Memory.new)
         end
 
         it "saves the rate without date" do
