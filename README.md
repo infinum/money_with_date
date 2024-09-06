@@ -338,7 +338,7 @@ Money.default_date_column = nil
 
 The gem has been tested against all possible combinations of supported Ruby, Rails, money, and money-rails versions:
 - Ruby: `3.0`, `3.1`, `3.2` and `3.3`
-- Rails: `~> 6.1.0`, `~> 7.0.0` and `~> 7.1.0`
+- Rails: `~> 6.1.0`, `~> 7.0.0`, `~> 7.1.0` and `~> 7.2.0`
 - money: `6.14.0`, `6.14.1`, `6.16.0`, `6.17.0`, `6.18.0` and `6.19.0`
 - money-rails: `1.15.0`
 
