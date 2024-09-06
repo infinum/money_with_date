@@ -19,7 +19,7 @@ module MoneyWithDate
     def hash
       return super unless ::Money.date_determines_equality
 
-      [fractional.hash, currency.hash, date.hash].hash
+      [fractional.hash, currency.hash, date.hash].hash # rubocop:disable Security/CompoundHash
     end
 
     def inspect

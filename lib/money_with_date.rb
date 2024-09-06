@@ -9,13 +9,13 @@ require_relative "money_with_date/instance_methods"
 require_relative "money_with_date/bank/variable_exchange"
 require_relative "money_with_date/rates_store/memory"
 
-::Money.prepend(::MoneyWithDate::InstanceMethods)
-::Money.singleton_class.prepend(::MoneyWithDate::ClassMethods)
+Money.prepend(MoneyWithDate::InstanceMethods)
+Money.singleton_class.prepend(MoneyWithDate::ClassMethods)
 
 # :nocov:
-::Money.date_determines_equality = false
-::Money.default_date = ::Date.respond_to?(:current) ? -> { ::Date.current } : -> { ::Date.today }
-::Money.default_date_column = :created_at
+Money.date_determines_equality = false
+Money.default_date = Date.respond_to?(:current) ? -> { Date.current } : -> { Date.today }
+Money.default_date_column = :created_at
 
-require "money_with_date/railtie" if defined?(::Rails::Railtie) && defined?(::MoneyRails)
+require "money_with_date/railtie" if defined?(Rails::Railtie) && defined?(MoneyRails)
 # :nocov:

@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "Extension for the money gem which adds dates to Money objects"
   spec.homepage = "https://github.com/infinum/money_with_date"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
@@ -30,10 +30,12 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "money", ">= #{MoneyWithDate::MINIMUM_MONEY_VERSION}", "<= #{MoneyWithDate::MAXIMUM_MONEY_VERSION}" # rubocop:disable Layout/LineLength
 
+  # rubocop:disable Gemspec/DevelopmentDependencies
   spec.add_development_dependency "pry"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "rubocop-rake"
   spec.add_development_dependency "rubocop-rspec"
+  # rubocop:enable all
 end

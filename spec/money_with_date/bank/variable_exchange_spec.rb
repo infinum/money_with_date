@@ -13,7 +13,7 @@ RSpec.describe MoneyWithDate::Bank::VariableExchange do
 
     context "with &block" do
       let(:bank) do
-        proc = proc { |n| n.ceil }
+        proc = proc(&:ceil)
         described_class.new(&proc).tap do |bank|
           bank.add_rate("USD", "EUR", 1.33, Date.today)
         end
@@ -131,7 +131,7 @@ RSpec.describe MoneyWithDate::Bank::VariableExchange do
 
       expect do
         bank.exchange_with(money, :eur)
-      end.to raise_error(::Money::Bank::UnknownRate).with_message(error_message)
+      end.to raise_error(Money::Bank::UnknownRate).with_message(error_message)
     end
 
     it "raises an error if an exchange rate doesn't exist at all" do
@@ -139,12 +139,12 @@ RSpec.describe MoneyWithDate::Bank::VariableExchange do
 
       expect do
         bank.exchange_with(money, :bbb)
-      end.to raise_error(::Money::Currency::UnknownCurrency).with_message("Unknown currency 'bbb'")
+      end.to raise_error(Money::Currency::UnknownCurrency).with_message("Unknown currency 'bbb'")
     end
 
     it "accepts a custom truncation method" do
       money = Money.new(10, :usd, date: Date.today)
-      proc = proc { |n| n.ceil }
+      proc = proc(&:ceil)
 
       exchanged_money = bank.exchange_with(money, :eur, &proc)
 

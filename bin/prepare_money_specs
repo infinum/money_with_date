@@ -12,7 +12,10 @@ money_version = ENV.fetch("MONEY_VERSION", nil)
 version_refs = {
   "6.14.0" => "e26e222af68bf9b89ac52e1c6e5b2562a0577a8e",
   "6.14.1" => "9bb10c79e24abb62ed5a0d1f88876cd459b307b7",
-  "6.16.0" => "ca59ced949e4e818262a59ffbcad3ec54affa81f"
+  "6.16.0" => "ca59ced949e4e818262a59ffbcad3ec54affa81f",
+  "6.17.0" => "35ced98c83d562b40623a985861e301a836327b5",
+  "6.18.0" => "f5699476c629d291b943ebbe495561d287599ed4",
+  "6.19.0" => "faec0fbb7cb10646453c5ef6644289d83615b4fe"
 }
 
 archive_folder_path = "#{__dir__}/../tmp"
@@ -46,12 +49,14 @@ spec_helper = spec_helper.gsub("./spec/support/**/*.rb", "./spec_money/support/*
 File.write("#{destination_folder_path}/spec_helper.rb", spec_helper)
 
 # Patching YAML spec failing because of Psych gem update
-patch_url = "https://github.com/RubyMoney/money/commit/9de53057f3089c98e2bf37f8d6b2e924ec7e52de.patch"
-IO.copy_stream(URI.open(patch_url), "#{destination_folder_path}/yaml.patch") # rubocop:disable Security/Open
-yaml_patch = File.read("#{destination_folder_path}/yaml.patch")
-yaml_patch = yaml_patch.gsub("spec/money_spec.rb", "spec_money/money_spec.rb")
-File.write("#{destination_folder_path}/yaml.patch", yaml_patch)
-system("git apply --include=spec_money/money_spec.rb spec_money/yaml.patch") || (raise "YAML spec patch error")
+if Gem::Version.new(money_version) < Gem::Version.new("6.18.0")
+  patch_url = "https://github.com/RubyMoney/money/commit/9de53057f3089c98e2bf37f8d6b2e924ec7e52de.patch"
+  IO.copy_stream(URI.open(patch_url), "#{destination_folder_path}/yaml.patch") # rubocop:disable Security/Open
+  yaml_patch = File.read("#{destination_folder_path}/yaml.patch")
+  yaml_patch = yaml_patch.gsub("spec/money_spec.rb", "spec_money/money_spec.rb")
+  File.write("#{destination_folder_path}/yaml.patch", yaml_patch)
+  system("git apply --include=spec_money/money_spec.rb spec_money/yaml.patch") || (raise "YAML spec patch error")
+end
 
 # Adding a simple spec to verify that money_with_date has been loaded
 File.open("#{destination_folder_path}/money_with_date_spec.rb", "w") do |f|

@@ -4,7 +4,7 @@ module MoneyWithDate
   module ActiveRecord
     module Monetizable
       def read_monetized(name, subunit_name, options = {}, *args)
-        money = super(name, subunit_name, options, *args)
+        money = super
         date = find_date_for(options[:with_model_date], options[:with_date])
 
         if money&.date == date
