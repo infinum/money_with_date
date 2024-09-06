@@ -342,6 +342,9 @@ The gem has been tested against all possible combinations of supported Ruby, Rai
 - money: `6.14.0`, `6.14.1`, `6.16.0`, `6.17.0`, `6.18.0` and `6.19.0`
 - money-rails: `1.15.0`
 
+The following combinations have been excluded from the test matrix because of incompatibility:
+- Ruby `3.0` with Rails `~> 7.2.0`
+
 In addition to running its own test suite, the CI for this gem also runs [money's](https://github.com/RubyMoney/money/tree/main/spec) and [money-rails's](https://github.com/RubyMoney/money-rails/tree/main/spec) test suites with this gem loaded, to prevent regressions. This has been achieved by cloning their test suites from GitHub and requiring this gem in their spec files. For technical information, check the CI [workflow](.github/workflows/ci.yml).
 
 ## Compatibility

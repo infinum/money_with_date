@@ -31,6 +31,9 @@ jobs:
         money: ['6.14.0', '6.14.1', '6.16.0', '6.17.0', '6.18.0', '6.19.0']
         money_rails: ['1.15.0']
         rails: ['~> 6.1.0', '~> 7.0.0', '~> 7.1.0', '~> 7.2.0']
+        exclude:
+          - ruby: '3.0'
+            rails: '~> 7.2.0'
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby
