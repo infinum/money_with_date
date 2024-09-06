@@ -7,6 +7,14 @@ gemspec
 gem "money", ENV["MONEY_VERSION"] if ENV["MONEY_VERSION"]
 gem "money-rails", ENV["MONEY_RAILS_VERSION"] if ENV["MONEY_RAILS_VERSION"]
 gem "activerecord", ENV["RAILS_VERSION"] if ENV["RAILS_VERSION"]
-gem "sqlite3", "~> 1.3.6" if ENV["RAILS_VERSION"]
+
+if ENV["RAILS_VERSION"]
+  if Gem::Version.new(ENV.fetch("RAILS_VERSION")) >= Gem::Version.new("7.1.0")
+    gem "sqlite3"
+  else
+    gem "sqlite3", "~> 1.3.6"
+  end
+end
+
 gem "rubyzip"
 gem "simplecov", require: false
