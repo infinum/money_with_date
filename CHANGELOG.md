@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+## [0.4.0] - 2024-09-06
+
+- Update supported versions ([#7](https://github.com/infinum/money_with_date/pull/7))
+
+**Breaking**: drops support for Ruby 2.6 and 2.7, and Rails 5.2 and 6.0.
+
 ## [0.3.0] - 2022-09-18
 
 - Fix monetizable module specs ([#4](https://github.com/infinum/money_with_date/pull/4))
