@@ -22,7 +22,7 @@ RSpec.describe MoneyWithDate::Hooks do
 
     context "when money-rails version is too high" do
       before do
-        stub_const("MoneyRails::VERSION", "1.16.0")
+        stub_const("MoneyRails::VERSION", "100.0.0")
       end
 
       it { is_expected.to eq(false) }

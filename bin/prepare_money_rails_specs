@@ -10,12 +10,14 @@ money_rails_version = ENV.fetch("MONEY_RAILS_VERSION", nil)
 
 # Matching money-rails versions to git commits
 version_refs = {
-  "1.15.0" => "4d05fee299765e85ebf31282cbb491c5b2beb609"
+  "1.15.0" => "4d05fee299765e85ebf31282cbb491c5b2beb609",
+  "2.0.0" => "5332813ff35a11c7aaf77810163081eedc20a55f",
+  "3.0.0" => "6638e4af6037c3e41318217c915e901c4e074407"
 }
 
-archive_folder_path = "#{__dir__}/../tmp"
+archive_folder_path = "tmp"
 archive_file_path = "#{archive_folder_path}/archive.zip"
-destination_folder_path = "#{__dir__}/../spec_money_rails"
+destination_folder_path = "spec_money_rails"
 
 FileUtils.mkdir_p archive_folder_path
 FileUtils.rm_rf destination_folder_path
@@ -40,7 +42,34 @@ FileUtils.mv "#{archive_folder_path}/money-rails-#{money_rails_version_ref}", de
 # Requiring money_with_date in money-rails specs
 File.open("#{destination_folder_path}/Gemfile", "a") { |f| f << 'gem "sprockets-rails"' }
 Dir["#{destination_folder_path}/gemfiles/*.gemfile"].each do |gemfile_path|
-  File.open(gemfile_path, "a") { |f| f << 'gem "money_with_date", path: "../../"' }
+  File.open(gemfile_path, "a") { |f| f << "gem \"money_with_date\", path: \"../../\"\n" }
+end
+
+# Bundler.with_clean_env -> Bundler.with_unbundled_env
+rakefile_path = File.join(destination_folder_path, "Rakefile")
+rakefile = File.read(rakefile_path)
+rakefile.gsub!("Bundler.with_clean_env", "Bundler.with_unbundled_env")
+File.write(rakefile_path, rakefile)
+
+# Requiring logger to avoid NameError: uninitialized constant ActiveSupport::LoggerThreadSafeLevel::Logger
+if Gem::Version.new(ENV.fetch("MONEY_RAILS_VERSION")) == Gem::Version.new("1.15.0")
+  application_path = File.join(destination_folder_path, "spec/dummy/config/application.rb")
+  application = File.read(application_path)
+  application = "require \"logger\"\n#{application}"
+  File.write(application_path, application)
+
+  # and adding non-default gems
+  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+    Dir["#{destination_folder_path}/gemfiles/*.gemfile"].each do |gemfile_path|
+      File.open(gemfile_path, "a") { |f| f << <<~RUBY }
+        gem "bigdecimal"
+        gem "mutex_m"
+        gem "benchmark"
+        gem "drb"
+        gem "ostruct"
+      RUBY
+    end
+  end
 end
 
 # Adding a simple spec to verify that money_with_date has been loaded

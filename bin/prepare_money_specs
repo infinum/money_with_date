@@ -15,12 +15,15 @@ version_refs = {
   "6.16.0" => "ca59ced949e4e818262a59ffbcad3ec54affa81f",
   "6.17.0" => "35ced98c83d562b40623a985861e301a836327b5",
   "6.18.0" => "f5699476c629d291b943ebbe495561d287599ed4",
-  "6.19.0" => "faec0fbb7cb10646453c5ef6644289d83615b4fe"
+  "6.19.0" => "faec0fbb7cb10646453c5ef6644289d83615b4fe",
+  "7.0.0" => "17fd5dceb804c6ea37ad2c4b088df15b483cd862",
+  "7.0.1" => "6482fb158f547fde04d300333c2401152bcde070",
+  "7.0.2" => "c344e94068c2eebf61493964b124a9a2deeafa38"
 }
 
-archive_folder_path = "#{__dir__}/../tmp"
+archive_folder_path = "tmp"
 archive_file_path = "#{archive_folder_path}/archive.zip"
-destination_folder_path = "#{__dir__}/../spec_money"
+destination_folder_path = "spec_money"
 
 FileUtils.mkdir_p archive_folder_path
 FileUtils.rm_rf destination_folder_path
@@ -56,6 +59,16 @@ if Gem::Version.new(money_version) < Gem::Version.new("6.18.0")
   yaml_patch = yaml_patch.gsub("spec/money_spec.rb", "spec_money/money_spec.rb")
   File.write("#{destination_folder_path}/yaml.patch", yaml_patch)
   system("git apply --include=spec_money/money_spec.rb spec_money/yaml.patch") || (raise "YAML spec patch error")
+end
+
+# Renaming `it` in heuristics_spec.rb so it works on Ruby >= 3.4
+# see https://github.com/RubyMoney/money/pull/1132/changes
+if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+  heuristics_spec_path = File.join(destination_folder_path, "currency/heuristics_spec.rb")
+
+  heuristics_spec = File.read(heuristics_spec_path)
+  heuristics_spec.gsub!("it.analyze", "Money::Currency.analyze")
+  File.write(heuristics_spec_path, heuristics_spec)
 end
 
 # Adding a simple spec to verify that money_with_date has been loaded

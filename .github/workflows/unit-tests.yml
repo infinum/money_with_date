@@ -1,0 +1,36 @@
+name: Unit Tests
+
+on:
+  workflow_call:
+    inputs:
+      ruby:
+        required: true
+        type: string
+      money:
+        required: true
+        type: string
+      money_rails:
+        required: true
+        type: string
+      rails:
+        required: true
+        type: string
+
+jobs:
+  unit_tests:
+    name: 'Unit tests'
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: Gemfile_test
+      MONEY_VERSION: ${{ inputs.money }}
+      MONEY_RAILS_VERSION: ${{ inputs.money_rails }}
+      RAILS_VERSION: ${{ inputs.rails }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ inputs.ruby }}
+        bundler-cache: true
+    - name: Run specs
+      run: bundle exec rake "spec:unit[${{ inputs.money }},${{ inputs.money_rails }},${{ inputs.rails }}]"

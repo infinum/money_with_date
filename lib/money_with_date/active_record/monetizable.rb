@@ -3,16 +3,32 @@
 module MoneyWithDate
   module ActiveRecord
     module Monetizable
-      def read_monetized(name, subunit_name, options = {}, *args)
-        money = super
-        date = find_date_for(options[:with_model_date], options[:with_date])
+      # :nocov:
+      # see https://github.com/RubyMoney/money-rails/pull/670/changes
+      if ::Gem::Version.new(::MoneyRails::VERSION) >= ::Gem::Version.new("2.0.0")
+        def read_monetized(name, subunit_name, options = {}, *args, **kwargs)
+          money = super
+          date = find_date_for(options[:with_model_date], options[:with_date])
 
-        if money&.date == date
-          money
-        else
-          instance_variable_set("@#{name}", money&.with_date(date))
+          if money&.date == date
+            money
+          else
+            instance_variable_set("@#{name}", money&.with_date(date))
+          end
+        end
+      else
+        def read_monetized(name, subunit_name, options = {}, *args)
+          money = super
+          date = find_date_for(options[:with_model_date], options[:with_date])
+
+          if money&.date == date
+            money
+          else
+            instance_variable_set("@#{name}", money&.with_date(date))
+          end
         end
       end
+      # :nocov:
 
       private
 
