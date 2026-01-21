@@ -1,5 +1,9 @@
 name: CI
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
 
@@ -12,37 +16,52 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.3'
+        ruby-version: '4.0'
         bundler-cache: true
     - name: Run rubocop
       run: bundle exec rake rubocop
-  test:
-    runs-on: ubuntu-latest
-    env:
-      BUNDLE_GEMFILE: Gemfile_test
-      MONEY_VERSION: ${{ matrix.money }}
-      MONEY_RAILS_VERSION: ${{ matrix.money_rails }}
-      RAILS_VERSION: ${{ matrix.rails }}
+  unit_tests_1:
+    uses: ./.github/workflows/unit-tests.yml
     name: 'rake "spec:unit[${{ matrix.money }},${{ matrix.money_rails }},${{ matrix.rails }}]" (Ruby ${{ matrix.ruby }})'
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.0', '3.1', '3.2', '3.3']
+        ruby: ['3.1', '3.2', '3.3', '3.4', '4.0']
         money: ['6.14.0', '6.14.1', '6.16.0', '6.17.0', '6.18.0', '6.19.0']
         money_rails: ['1.15.0']
-        rails: ['~> 6.1.0', '~> 7.0.0', '~> 7.1.0', '~> 7.2.0']
+        rails: ['~> 6.1.0', '~> 7.0.0', '~> 7.1.0', '~> 7.2.0', '~> 8.0.0', '~> 8.1.0']
         exclude:
-          - ruby: '3.0'
-            rails: '~> 7.2.0'
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        bundler-cache: true
-    - name: Run specs
-      run: bundle exec rake "spec:unit[${{ matrix.money }},${{ matrix.money_rails }},${{ matrix.rails }}]"
+          - ruby: '3.1'
+            rails: '~> 8.0.0'
+          - ruby: '3.1'
+            rails: '~> 8.1.0'
+    with:
+      ruby: ${{ matrix.ruby }}
+      money: ${{ matrix.money }}
+      money_rails: ${{ matrix.money_rails }}
+      rails: ${{ matrix.rails }}
+  unit_tests_2:
+    uses: ./.github/workflows/unit-tests.yml
+    name: 'rake "spec:unit[${{ matrix.money }},${{ matrix.money_rails }},${{ matrix.rails }}]" (Ruby ${{ matrix.ruby }})'
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ['3.1', '3.2', '3.3', '3.4', '4.0']
+        money: ['7.0.0', '7.0.1', '7.0.2']
+        money_rails: ['2.0.0', '3.0.0']
+        rails: ['~> 6.1.0', '~> 7.0.0', '~> 7.1.0', '~> 7.2.0', '~> 8.0.0', '~> 8.1.0']
+        exclude:
+          - ruby: '3.1'
+            rails: '~> 8.0.0'
+          - ruby: '3.1'
+            rails: '~> 8.1.0'
+          - money_rails: '3.0.0'
+            rails: '~> 6.1.0'
+    with:
+      ruby: ${{ matrix.ruby }}
+      money: ${{ matrix.money }}
+      money_rails: ${{ matrix.money_rails }}
+      rails: ${{ matrix.rails }}
   test_money:
     runs-on: ubuntu-latest
     env:
@@ -52,8 +71,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.0', '3.1', '3.2', '3.3']
-        money: ['6.14.0', '6.14.1', '6.16.0', '6.17.0', '6.18.0', '6.19.0']
+        ruby: ['3.1', '3.2', '3.3', '3.4', '4.0']
+        money: ['6.14.0', '6.14.1', '6.16.0', '6.17.0', '6.18.0', '6.19.0', '7.0.0', '7.0.1', '7.0.2']
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby
@@ -72,9 +91,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.0', '3.1', '3.2', '3.3']
-        money_rails: ['1.15.0']
-        mongodb: ['4.4']
+        ruby: ['3.1', '3.2', '3.3', '3.4', '4.0']
+        money_rails: ['1.15.0', '2.0.0', '3.0.0']
+        mongodb: ['4.4', '7.0']
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby

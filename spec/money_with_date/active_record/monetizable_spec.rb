@@ -2,6 +2,7 @@
 
 require "money_with_date/hooks"
 require "money-rails"
+require "logger"
 require "active_record"
 
 ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
@@ -206,6 +207,34 @@ RSpec.describe ".monetize" do
       record = model.new(price_cents: 100, created_on: nil)
 
       expect(record.price.date).to eq(Date.today)
+    end
+  end
+
+  if Gem::Version.new(MoneyRails::VERSION) >= Gem::Version.new("2.0.0")
+    context "when monetized method accepts keyword arguments" do
+      let(:model) do
+        Class.new(ActiveRecord::Base) do
+          self.table_name = "products"
+
+          def self.model_name
+            "Product"
+          end
+
+          monetize :total_cents, with_model_currency: :price_currency
+
+          def total_cents(tax_cents:)
+            price_cents + tax_cents
+          end
+        end
+      end
+
+      it "forwards them" do
+        record = model.new(price_cents: 100, price_currency: "EUR")
+
+        result = record.total(tax_cents: 100)
+        expect(result).to eq(Money.new(200, :eur))
+        expect(result.date).to eq(Date.today)
+      end
     end
   end
 end

@@ -332,18 +332,15 @@ Money.default_date_column = nil
 ## Supported Versions
 
 `money_with_date` has the following version requirements:
-- Ruby: **>= 3.0.0**
-- money: **>= 6.14.0** and **<= 6.19.0**
-- money-rails: **1.15.0**
+- Ruby: **>= 3.1.0**
+- money: **>= 6.14.0** and **<= 7.0.2**
+- money-rails: **>= 1.15.0** and **<= 3.0.0**
 
 The gem has been tested against all possible combinations of supported Ruby, Rails, money, and money-rails versions:
-- Ruby: `3.0`, `3.1`, `3.2` and `3.3`
-- Rails: `~> 6.1.0`, `~> 7.0.0`, `~> 7.1.0` and `~> 7.2.0`
-- money: `6.14.0`, `6.14.1`, `6.16.0`, `6.17.0`, `6.18.0` and `6.19.0`
-- money-rails: `1.15.0`
-
-The following combinations have been excluded from the test matrix because of incompatibility:
-- Ruby `3.0` with Rails `~> 7.2.0`
+- Ruby: `3.1`, `3.2`, `3.3`, `3.4` and `4.0`
+- Rails: `~> 6.1.0`, `~> 7.0.0`, `~> 7.1.0`, `~> 7.2.0`, `~> 8.0.0` and `~> 8.1.0`
+- money: `6.14.0`, `6.14.1`, `6.16.0`, `6.17.0`, `6.18.0`, `6.19.0`, `7.0.0`, `7.0.1` and `7.0.2`
+- money-rails: `1.15.0`, `2.0.0` and `3.0.0`
 
 In addition to running its own test suite, the CI for this gem also runs [money's](https://github.com/RubyMoney/money/tree/main/spec) and [money-rails's](https://github.com/RubyMoney/money-rails/tree/main/spec) test suites with this gem loaded, to prevent regressions. This has been achieved by cloning their test suites from GitHub and requiring this gem in their spec files. For technical information, check the CI [workflow](.github/workflows/ci.yml).
 

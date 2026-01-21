@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     money_with_date (0.4.0)
-      money (>= 6.14.0, <= 6.19.0)
+      money (>= 6.14.0, <= 7.0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -74,4 +74,4 @@ DEPENDENCIES
   rubocop-rspec
 
 BUNDLED WITH
-   2.5.18
+   4.0.3
